@@ -1,0 +1,130 @@
+using System;
+
+namespace PersonalInformation
+{
+    class PersonalInfo
+    {
+        string name;
+        int age;
+        double height;
+        double doubleAge;
+
+        /// <summary>
+        /// This method only gathers the user's personal information - name, age, and height
+        /// In here, the conversion of age from in to double is also included
+        /// </summary>
+        public void GatherInfo () 
+        {
+            string value;
+            do
+            {
+                Console.WriteLine("Welcome to your Personal Information System!");
+
+                Console.Write("\nPlease enter your name: ");
+                name = Console.ReadLine();
+                if (!IsNumericName(name))
+                {
+                    Console.Write("Please enter your age: ");
+                    string ageString = Console.ReadLine();
+                    if (int.TryParse(ageString, out age) && age > 0)
+                    {
+                        doubleAge = age;
+                        Console.Write("Please enter your height (in meters): ");
+                        string heightString = Console.ReadLine();
+                        if (double.TryParse(heightString, out height) && height > 0)
+                        {
+                            DisplayInfo();
+                            PersInf();
+                        }
+                        else
+                        {
+                            Console.Write("Invalid input of height.");
+                        }
+                    }
+                    else
+                    {
+                        Console.Write("Invalid input of age.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Sorry, name cannot contain numbers.");
+                }
+
+            Console.WriteLine("\nDo you wish to continue? (y/n)");
+            value = Console.ReadLine();
+            }
+            while (value == "y" || value == "Y");
+        }
+
+        /// <summary>
+        /// This method is for the validation if inputted name is numeric
+        /// </summary>
+
+        public bool IsNumericName(string name)
+        {
+            foreach (char c in name)
+            {
+                if (!char.IsDigit(c))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+
+        /// <summary>
+        /// This method is to display user's inputted information.
+        /// This also determines if he or she is in the legal age and whether he or she is eligible for drinking. Huzzah!
+        /// </summary>
+        public void DisplayInfo () 
+        {
+            const int Legal_Drinking_Age = 21;
+
+            Console.WriteLine("\n\nHere are your personal details:");
+            Console.WriteLine("Name: {0}", name);
+            Console.WriteLine("Age: {0}", doubleAge);
+            Console.WriteLine("Height in meters: {0}", height);
+            Console.WriteLine("\n\n--------------------------------------------");
+
+            Console.WriteLine("Age Check: ");
+            if(age >= 18 && age < Legal_Drinking_Age)
+            {
+                Console.WriteLine("Welcome to adult life!");
+            }
+
+            else if (age >= Legal_Drinking_Age)
+            {
+                Console.WriteLine("Welcome, {0}! You're eligible for additional features!", name);
+
+                Console.WriteLine("\nDrinking age verification: ");
+                Console.WriteLine("Cheers! You're legally allowed to enjoy alcoholic beverages and yolo!");
+            }
+
+            else
+                Console.WriteLine("Sorry {0}, but you're still a minor. Hence, you're not eligible for any additional features.", name);
+        }
+
+        /// <summary>
+        /// This method is for the string manipulation of the personal information
+        /// </summary>
+
+        public void PersInf() 
+        {
+            Console.WriteLine("\n\nHere are your Personal Details:");
+            string personalInfo = $"{name}, {doubleAge} years old, {height} meters tall";
+            Console.WriteLine(personalInfo);
+
+            Console.WriteLine("\n\n-------------------------------------------------");
+            Console.WriteLine("Thank you for using Your Personal Information System!");
+        }
+
+        static void Main(string[] args) //excluded the DisplayInfo and PersInf since it's included in GatherInfo
+        {
+            PersonalInfo p = new PersonalInfo();
+            p.GatherInfo();
+            Console.ReadLine();
+        }
+    }
+}
